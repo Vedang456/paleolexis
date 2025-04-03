@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Book, FileText, Type } from "lucide-react";
+import { Book, FileText, Type, Percent } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface TranslationDisplayProps {
   imageUrl: string | null;
   sanskritText: string;
   transliteration: string;
   englishTranslation: string;
+  confidence?: number | null;
   isLoading?: boolean;
 }
 
@@ -18,6 +20,7 @@ const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
   sanskritText,
   transliteration,
   englishTranslation,
+  confidence = null,
   isLoading = false,
 }) => {
   const [activeTab, setActiveTab] = useState("sanskrit");
@@ -32,6 +35,13 @@ const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
         <CardTitle className="flex items-center text-lg">
           <FileText className="mr-2 h-5 w-5 text-parchment-800" />
           Recognition Results
+          {confidence !== null && (
+            <div className="ml-auto flex items-center text-sm font-normal">
+              <Percent className="mr-1 h-4 w-4 text-parchment-600" />
+              <span>Confidence: {confidence.toFixed(1)}%</span>
+              <Progress value={confidence} className="ml-2 h-2 w-20" />
+            </div>
+          )}
         </CardTitle>
       </CardHeader>
 

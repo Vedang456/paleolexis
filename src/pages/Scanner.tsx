@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, Book, ArrowDown } from "lucide-react";
+import { processImage } from "@/services/ocrService";
 
 const Scanner: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -23,6 +24,7 @@ const Scanner: React.FC = () => {
     transliteration: "",
     englishTranslation: "",
   });
+  const [confidence, setConfidence] = useState<number | null>(null);
   
   const location = useLocation();
   const { toast } = useToast();
@@ -44,6 +46,7 @@ const Scanner: React.FC = () => {
       transliteration: "",
       englishTranslation: "",
     });
+    setConfidence(null);
   };
 
   const handleSelectSample = (
@@ -58,9 +61,10 @@ const Scanner: React.FC = () => {
       transliteration: transliteration,
       englishTranslation: english,
     });
+    setConfidence(95); // High confidence for demo samples
   };
 
-  const processImage = () => {
+  const processImageWithOCR = async () => {
     if (!file && !isDemoMode) {
       toast({
         title: "No image selected",
@@ -74,10 +78,7 @@ const Scanner: React.FC = () => {
     setIsProcessing(true);
     console.log("Processing image:", file?.name);
     
-    // Simulate processing with actual file validation
-    setTimeout(() => {
-      setIsProcessing(false);
-      
+    try {
       if (!isDemoMode && file) {
         // Check if the file is a valid image
         if (!file.type.startsWith('image/')) {
@@ -86,32 +87,38 @@ const Scanner: React.FC = () => {
             description: "Please upload a valid image file",
             variant: "destructive",
           });
+          setIsProcessing(false);
           return;
         }
         
-        // Mock results based on file type and size to make it seem more dynamic
-        const fileSize = Math.floor(file.size / 1024); // KB
-        const mockTexts = [
-          "अयं निजः परो वेति गणना लघुचेतसाम्। उदारचरितानां तु वसुधैव कुटुम्बकम्॥",
-          "विद्या ददाति विनयं विनयाद्याति पात्रताम्। पात्रत्वाद्धनमाप्नोति धनाद्धर्मं ततः सुखम्॥",
-          "माता शत्रुः पिता वैरी येन बालो न पाठितः। न शोभते सभामध्ये हंसमध्ये बको यथा॥"
-        ];
+        // Process the image with Tesseract OCR
+        const result = await processImage(file);
         
-        // Select text based on file size (just for variety)
-        const textIndex = fileSize % 3;
-        
+        // Update the results
         setScanResults({
-          sanskritText: mockTexts[textIndex],
-          transliteration: "Sample transliteration for uploaded image " + file.name,
-          englishTranslation: "This is a sample translation for your uploaded image. The actual OCR processing would analyze the Sanskrit characters in your manuscript.",
+          sanskritText: result.sanskritText,
+          transliteration: result.transliteration,
+          englishTranslation: result.englishTranslation,
         });
+        
+        // Store confidence score
+        setConfidence(result.confidence);
         
         toast({
           title: "Processing complete",
-          description: "Your manuscript has been successfully analyzed",
+          description: `Your manuscript has been analyzed with ${result.confidence.toFixed(1)}% confidence`,
         });
       }
-    }, 2000);
+    } catch (error) {
+      console.error("OCR processing error:", error);
+      toast({
+        title: "Processing failed",
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -144,7 +151,7 @@ const Scanner: React.FC = () => {
               {imageUrl && !isDemoMode && (
                 <div className="flex justify-center">
                   <Button 
-                    onClick={processImage} 
+                    onClick={processImageWithOCR} 
                     disabled={isProcessing}
                     size="lg"
                     className="gap-2"
@@ -170,6 +177,7 @@ const Scanner: React.FC = () => {
                   sanskritText={scanResults.sanskritText}
                   transliteration={scanResults.transliteration}
                   englishTranslation={scanResults.englishTranslation}
+                  confidence={confidence}
                   isLoading={isProcessing}
                 />
               )}
@@ -194,6 +202,7 @@ const Scanner: React.FC = () => {
                   sanskritText={scanResults.sanskritText}
                   transliteration={scanResults.transliteration}
                   englishTranslation={scanResults.englishTranslation}
+                  confidence={confidence}
                   isLoading={false}
                 />
               )}
