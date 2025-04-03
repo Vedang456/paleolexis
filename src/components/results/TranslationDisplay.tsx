@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Book, FileText, Type, Percent } from "lucide-react";
+import { Book, FileText, Type, Percent, RefreshCw } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 interface TranslationDisplayProps {
   imageUrl: string | null;
@@ -13,6 +14,7 @@ interface TranslationDisplayProps {
   englishTranslation: string;
   confidence?: number | null;
   isLoading?: boolean;
+  onRetranslate?: () => void;
 }
 
 const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
@@ -22,6 +24,7 @@ const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
   englishTranslation,
   confidence = null,
   isLoading = false,
+  onRetranslate
 }) => {
   const [activeTab, setActiveTab] = useState("sanskrit");
 
@@ -132,8 +135,21 @@ const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-parchment-600"></div>
                   </div>
                 ) : (
-                  <div>
-                    <h3 className="mb-2 font-medium">English Translation</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium">English Translation</h3>
+                      {onRetranslate && (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={onRetranslate}
+                          className="text-xs"
+                        >
+                          <RefreshCw className="mr-1 h-3 w-3" />
+                          Refresh Translation
+                        </Button>
+                      )}
+                    </div>
                     <div className="min-h-[200px] rounded-md border border-parchment-200 bg-card p-4 text-base leading-relaxed">
                       {englishTranslation || "No English translation available."}
                     </div>

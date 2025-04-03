@@ -121,6 +121,58 @@ const Scanner: React.FC = () => {
     }
   };
 
+  const handleRetranslate = async () => {
+    if (!scanResults.sanskritText) {
+      toast({
+        title: "No text to translate",
+        description: "Please scan a document first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    try {
+      // Call the translation API directly
+      const translationResponse = await fetch("https://sanskrit-api.vercel.app/translate", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: scanResults.sanskritText,
+          source: 'sanskrit',
+          target: 'english'
+        }),
+      });
+
+      if (translationResponse.ok) {
+        const translationData = await translationResponse.json();
+        setScanResults(prev => ({
+          ...prev,
+          englishTranslation: translationData.translation || "Translation not available"
+        }));
+        
+        toast({
+          title: "Translation updated",
+          description: "The English translation has been refreshed",
+        });
+      } else {
+        throw new Error("Translation API request failed");
+      }
+    } catch (error) {
+      console.error('Retranslation error:', error);
+      toast({
+        title: "Translation failed",
+        description: error instanceof Error ? error.message : "Failed to get a new translation",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -179,6 +231,7 @@ const Scanner: React.FC = () => {
                   englishTranslation={scanResults.englishTranslation}
                   confidence={confidence}
                   isLoading={isProcessing}
+                  onRetranslate={handleRetranslate}
                 />
               )}
             </TabsContent>

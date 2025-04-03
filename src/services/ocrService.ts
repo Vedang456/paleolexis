@@ -1,5 +1,5 @@
 
-import { createWorker, PSM } from 'tesseract.js';
+import { PSM } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -8,10 +8,14 @@ export interface OCRResult {
   confidence: number;
 }
 
+// Sanskrit translation API endpoints
+const TRANSLATION_API_URL = "https://sanskrit-api.vercel.app/translate";
+
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
     // Create a worker with the correct configuration
-    const worker = await createWorker();
+    // Note: Tesseract.js v5 has different worker initialization
+    const worker = await (await import('tesseract.js')).createWorker();
     
     // In Tesseract.js v5, we load languages differently
     // First try Sanskrit, but fallback to English if not available
@@ -86,6 +90,31 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
       .replace(/ं/g, 'ṃ')
       .replace(/ः/g, 'ḥ');
 
+    // Get English translation using the Sanskrit API
+    let englishTranslation = "Translation not available";
+    try {
+      const translationResponse = await fetch(TRANSLATION_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: result.data.text,
+          source: 'sanskrit',
+          target: 'english'
+        }),
+      });
+
+      if (translationResponse.ok) {
+        const translationData = await translationResponse.json();
+        englishTranslation = translationData.translation || "Translation not available";
+      } else {
+        console.warn('Failed to get translation from API:', await translationResponse.text());
+      }
+    } catch (translationError) {
+      console.error('Translation API error:', translationError);
+    }
+
     // Terminate the worker to free up resources
     await worker.terminate();
 
@@ -93,7 +122,7 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
     return {
       sanskritText: result.data.text,
       transliteration: basicTransliteration,
-      englishTranslation: "Translation not available - this would require an actual Sanskrit translation API.",
+      englishTranslation: englishTranslation,
       confidence: result.data.confidence
     };
   } catch (error) {
