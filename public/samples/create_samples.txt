@@ -1,0 +1,9 @@
+
+Create these sample files in the public/samples directory:
+
+1. sanskrit-sample1.jpg - An image of ancient Sanskrit text (first sample)
+2. sanskrit-sample2.jpg - An image of ancient Sanskrit text (second sample)
+3. sanskrit-sample3.jpg - An image of ancient Sanskrit text (third sample)
+4. hero-manuscript.jpg - A high-quality image of a Sanskrit manuscript for the hero section
+
+If these images aren't available, the app will fall back to using placeholder images.
