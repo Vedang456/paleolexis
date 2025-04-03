@@ -1,5 +1,5 @@
 
-import { createWorker } from 'tesseract.js';
+import { createWorker, PSM } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -10,12 +10,9 @@ export interface OCRResult {
 
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
-    // Create a worker with the Sanskrit language data
-    // Note: Using 'san' for Sanskrit, falling back to 'eng' if Sanskrit isn't available
-    const worker = await createWorker({
-      logger: (m) => console.log(m),
-    });
-
+    // Create a worker with the correct logger configuration
+    const worker = await createWorker();
+    
     // Load language data - first try Sanskrit, but fallback to English if not available
     try {
       await worker.loadLanguage('san');
@@ -28,7 +25,7 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
 
     // Set page segmentation mode to treat the image as a single block of text
     await worker.setParameters({
-      tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
+      tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
     });
 
     // Create a URL from the file
