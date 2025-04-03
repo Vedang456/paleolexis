@@ -1,5 +1,6 @@
 
-import { PSM } from 'tesseract.js';
+import { createWorker } from 'tesseract.js';
+import type { PSM } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -13,17 +14,17 @@ const TRANSLATION_API_URL = "https://sanskrit-api.vercel.app/translate";
 
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
-    // Create a worker with the correct configuration
-    // Note: Tesseract.js v5 has different worker initialization
-    const worker = await (await import('tesseract.js')).createWorker();
+    // Create a worker for Tesseract.js v5
+    const worker = await createWorker();
     
     // In Tesseract.js v5, we load languages differently
-    // First try Sanskrit, but fallback to English if not available
     try {
+      // Load and initialize Sanskrit language
       await worker.loadLanguage('san');
       await worker.initialize('san');
     } catch (e) {
       console.warn('Sanskrit language data not available, falling back to English');
+      // Fallback to English if Sanskrit is not available
       await worker.loadLanguage('eng');
       await worker.initialize('eng');
     }
