@@ -223,7 +223,7 @@ const Scanner: React.FC = () => {
                 </div>
               )}
               
-              {(imageUrl || isProcessing) && !isDemoMode && (
+              {(imageUrl || isProcessing) && (
                 <TranslationDisplay
                   imageUrl={imageUrl}
                   sanskritText={scanResults.sanskritText}
@@ -249,7 +249,7 @@ const Scanner: React.FC = () => {
                 </CardContent>
               </Card>
               
-              {imageUrl && isDemoMode && (
+              {imageUrl && (
                 <TranslationDisplay
                   imageUrl={imageUrl}
                   sanskritText={scanResults.sanskritText}
