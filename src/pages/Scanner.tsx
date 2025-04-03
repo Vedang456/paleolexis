@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FileUpload from "@/components/ui/FileUpload";
@@ -35,6 +36,7 @@ const Scanner: React.FC = () => {
   }, [location]);
 
   const handleImageUpload = (uploadedFile: File, previewUrl: string) => {
+    console.log("File uploaded:", uploadedFile.name, uploadedFile.type);
     setFile(uploadedFile);
     setImageUrl(previewUrl);
     setScanResults({
@@ -68,19 +70,40 @@ const Scanner: React.FC = () => {
       return;
     }
 
-    // Simulate processing
+    // Start processing
     setIsProcessing(true);
+    console.log("Processing image:", file?.name);
     
-    // In a real implementation, this would call the backend API
+    // Simulate processing with actual file validation
     setTimeout(() => {
       setIsProcessing(false);
       
-      // Mock results (in a real app, this would come from the API)
-      if (!isDemoMode) {
+      if (!isDemoMode && file) {
+        // Check if the file is a valid image
+        if (!file.type.startsWith('image/')) {
+          toast({
+            title: "Invalid file format",
+            description: "Please upload a valid image file",
+            variant: "destructive",
+          });
+          return;
+        }
+        
+        // Mock results based on file type and size to make it seem more dynamic
+        const fileSize = Math.floor(file.size / 1024); // KB
+        const mockTexts = [
+          "अयं निजः परो वेति गणना लघुचेतसाम्। उदारचरितानां तु वसुधैव कुटुम्बकम्॥",
+          "विद्या ददाति विनयं विनयाद्याति पात्रताम्। पात्रत्वाद्धनमाप्नोति धनाद्धर्मं ततः सुखम्॥",
+          "माता शत्रुः पिता वैरी येन बालो न पाठितः। न शोभते सभामध्ये हंसमध्ये बको यथा॥"
+        ];
+        
+        // Select text based on file size (just for variety)
+        const textIndex = fileSize % 3;
+        
         setScanResults({
-          sanskritText: "अयं निजः परो वेति गणना लघुचेतसाम्। उदारचरितानां तु वसुधैव कुटुम्बकम्॥",
-          transliteration: "ayaṃ nijaḥ paro veti gaṇanā laghucetasām| udāracaritānāṃ tu vasudhaiva kuṭumbakam||",
-          englishTranslation: "This is mine, that is his, say the small-minded. The enlightened believe that the entire world is a family.",
+          sanskritText: mockTexts[textIndex],
+          transliteration: "Sample transliteration for uploaded image " + file.name,
+          englishTranslation: "This is a sample translation for your uploaded image. The actual OCR processing would analyze the Sanskrit characters in your manuscript.",
         });
         
         toast({
