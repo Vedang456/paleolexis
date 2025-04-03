@@ -11,15 +11,15 @@ interface FeatureCardProps {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, description }) => {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md">
-      <CardHeader className="pb-2">
-        <div className="mb-2 inline-flex rounded-lg bg-primary/10 p-2 text-primary">
+    <Card className="overflow-hidden transition-all hover:shadow-md border-parchment-200 parchment">
+      <CardHeader className="pb-2 border-b border-parchment-200">
+        <div className="mb-2 inline-flex rounded-lg bg-parchment-100 p-2 text-parchment-800">
           <Icon className="h-6 w-6" />
         </div>
-        <CardTitle className="text-xl">{title}</CardTitle>
+        <CardTitle className="text-xl font-monomakh">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <CardDescription className="text-base">{description}</CardDescription>
+      <CardContent className="pt-4">
+        <CardDescription className="text-base text-parchment-900">{description}</CardDescription>
       </CardContent>
     </Card>
   );

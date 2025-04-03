@@ -93,6 +93,7 @@ export default {
 			fontFamily: {
 				serif: ['Cormorant Garamond', 'Garamond', 'serif'],
 				sans: ['Inter', 'system-ui', 'sans-serif'],
+				monomakh: ['"Monomakh Unicode"', 'serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

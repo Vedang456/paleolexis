@@ -1,9 +1,13 @@
 
 Create these sample files in the public/samples directory:
 
-1. sanskrit-sample1.jpg - An image of ancient Sanskrit text (first sample)
-2. sanskrit-sample2.jpg - An image of ancient Sanskrit text (second sample)
-3. sanskrit-sample3.jpg - An image of ancient Sanskrit text (third sample)
+1. sanskrit-sample1.jpg - An image of ancient Sanskrit text on palm leaf (first sample)
+2. sanskrit-sample2.jpg - An image of Sanskrit inscription on stone (second sample)
+3. sanskrit-sample3.jpg - An image of handwritten Sanskrit text on parchment (third sample)
 4. hero-manuscript.jpg - A high-quality image of a Sanskrit manuscript for the hero section
+5. palm-leaf.jpg - An image of a traditional palm leaf manuscript
+6. bhoj-patra.jpg - An image of a birch bark (Bhoj Patra) manuscript
+7. copper-plate.jpg - An image of a Sanskrit inscription on a copper plate
+8. stone-inscription.jpg - An image of ancient Sanskrit inscription carved on temple wall
 
 If these images aren't available, the app will fall back to using placeholder images.
