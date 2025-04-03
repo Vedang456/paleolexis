@@ -1,7 +1,5 @@
 
-import { createWorker } from 'tesseract.js';
-// Import PSM as a value, not a type
-import { PSM } from 'tesseract.js';
+import { createWorker, Worker, PSM } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -15,14 +13,11 @@ const TRANSLATION_API_URL = "https://sanskrit-api.vercel.app/translate";
 
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
-    // Create a worker for Tesseract.js v5
-    const worker = await createWorker();
+    // Create a worker for Tesseract.js
+    const worker: Worker = await createWorker();
     
     try {
-      // Initialize worker first
-      await worker.load();
-      
-      // Load Sanskrit language data if available
+      // Initialize worker with language data
       try {
         await worker.loadLanguage('san');
         await worker.initialize('san');

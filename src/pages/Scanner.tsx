@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -29,7 +28,6 @@ const Scanner: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  // Check if demo mode is enabled via URL parameter
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.get("demo") === "true") {
@@ -74,13 +72,11 @@ const Scanner: React.FC = () => {
       return;
     }
 
-    // Start processing
     setIsProcessing(true);
     console.log("Processing image:", file?.name);
     
     try {
       if (!isDemoMode && file) {
-        // Check if the file is a valid image
         if (!file.type.startsWith('image/')) {
           toast({
             title: "Invalid file format",
@@ -91,17 +87,14 @@ const Scanner: React.FC = () => {
           return;
         }
         
-        // Process the image with Tesseract OCR
         const result = await processImage(file);
         
-        // Update the results
         setScanResults({
           sanskritText: result.sanskritText,
           transliteration: result.transliteration,
           englishTranslation: result.englishTranslation,
         });
         
-        // Store confidence score
         setConfidence(result.confidence);
         
         toast({
@@ -134,7 +127,6 @@ const Scanner: React.FC = () => {
     setIsProcessing(true);
     
     try {
-      // Call the translation API directly
       const translationResponse = await fetch("https://sanskrit-api.vercel.app/translate", {
         method: 'POST',
         headers: {
@@ -193,7 +185,7 @@ const Scanner: React.FC = () => {
               </TabsTrigger>
               <TabsTrigger value="demo" className="flex items-center gap-1">
                 <Book className="h-4 w-4" />
-                <span>Demo Samples</span>
+                <span>Try Demo</span>
               </TabsTrigger>
             </TabsList>
 
