@@ -89,6 +89,19 @@ export default {
 					900: '#2d3a54',
 					950: '#1e253a',
 				},
+				cave: {
+					50: '#f5f6f7',
+					100: '#e1e4e8',
+					200: '#c5cad1',
+					300: '#a1a6b0', 
+					400: '#7c8292',
+					500: '#606777',
+					600: '#4d5261',
+					700: '#403E43', // charcoal gray
+					800: '#1A1F2C', // dark purple
+					900: '#221F26', // dark charcoal
+					950: '#13111a',
+				},
 			},
 			fontFamily: {
 				serif: ['Cormorant Garamond', 'Garamond', 'serif'],

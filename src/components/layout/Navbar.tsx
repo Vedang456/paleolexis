@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Home, Upload } from "lucide-react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const Navbar: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ const Navbar: React.FC = () => {
           <BookOpen className="h-6 w-6 text-primary" />
           <span className="text-2xl font-semibold tracking-tight">Paleolexis</span>
         </div>
-        <nav className="ml-auto flex gap-4">
+        <nav className="ml-auto flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild>
             <Link to="/" className="flex items-center gap-2">
               <Home className="h-4 w-4" />
@@ -25,6 +26,7 @@ const Navbar: React.FC = () => {
               <span>Scanner</span>
             </Link>
           </Button>
+          <ThemeToggle />
         </nav>
       </div>
     </header>
