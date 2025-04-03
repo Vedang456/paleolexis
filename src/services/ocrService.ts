@@ -1,5 +1,5 @@
 
-import { createWorker, PSM } from 'tesseract.js';
+import { createWorker, PSM, Worker } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -10,7 +10,7 @@ export interface OCRResult {
 
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
-    // Create a worker with the correct logger configuration
+    // Create a worker with the correct configuration
     const worker = await createWorker();
     
     // Load language data - first try Sanskrit, but fallback to English if not available
