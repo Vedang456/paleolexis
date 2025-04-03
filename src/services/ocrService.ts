@@ -1,6 +1,7 @@
 
 import { createWorker } from 'tesseract.js';
-import type { PSM } from 'tesseract.js';
+// Import PSM as a value, not a type
+import { PSM } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -17,7 +18,7 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
     // Create a worker for Tesseract.js v5
     const worker = await createWorker();
     
-    // In Tesseract.js v5, we load languages differently
+    // In Tesseract.js v5, we need to use the correct method signature
     try {
       // Load and initialize Sanskrit language
       await worker.loadLanguage('san');
