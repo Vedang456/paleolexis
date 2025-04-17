@@ -1,5 +1,5 @@
 
-import { createWorker, Worker, PSM, WorkerParams, RecognizeResult } from 'tesseract.js';
+import { createWorker, PSM, RecognizeResult } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
