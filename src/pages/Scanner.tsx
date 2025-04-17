@@ -63,8 +63,7 @@ const Scanner: React.FC = () => {
 
   const processImageWithOCR = async () => {
     if (!file && !isDemoMode) {
-      toast({
-        title: "No image selected",
+      toast("No image selected", {
         description: "Please upload an image to process",
         variant: "destructive",
       });
@@ -77,8 +76,7 @@ const Scanner: React.FC = () => {
     try {
       if (!isDemoMode && file) {
         if (!file.type.startsWith('image/')) {
-          toast({
-            title: "Invalid file format",
+          toast("Invalid file format", {
             description: "Please upload a valid image file",
             variant: "destructive",
           });
@@ -96,15 +94,13 @@ const Scanner: React.FC = () => {
         
         setConfidence(result.confidence);
         
-        toast({
-          title: "Processing complete",
+        toast("Processing complete", {
           description: `Your manuscript has been analyzed with ${result.confidence.toFixed(1)}% confidence`,
         });
       }
     } catch (error) {
       console.error("OCR processing error:", error);
-      toast({
-        title: "Processing failed",
+      toast("Processing failed", {
         description: error instanceof Error ? error.message : "Unknown error occurred",
         variant: "destructive",
       });
@@ -115,8 +111,7 @@ const Scanner: React.FC = () => {
 
   const handleRetranslate = async () => {
     if (!scanResults.sanskritText) {
-      toast({
-        title: "No text to translate",
+      toast("No text to translate", {
         description: "Please scan a document first",
         variant: "destructive",
       });
@@ -145,8 +140,7 @@ const Scanner: React.FC = () => {
           englishTranslation: translationData.translation || "Translation not available"
         }));
         
-        toast({
-          title: "Translation updated",
+        toast("Translation updated", {
           description: "The English translation has been refreshed",
         });
       } else {
@@ -154,8 +148,7 @@ const Scanner: React.FC = () => {
       }
     } catch (error) {
       console.error('Retranslation error:', error);
-      toast({
-        title: "Translation failed",
+      toast("Translation failed", {
         description: error instanceof Error ? error.message : "Failed to get a new translation",
         variant: "destructive",
       });
