@@ -19,11 +19,13 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
     try {
       // Initialize worker with language data
       try {
+        await worker.load();
         await worker.loadLanguage('san');
         await worker.initialize('san');
       } catch (e) {
         console.warn('Sanskrit language data not available, falling back to English');
         // Fallback to English if Sanskrit is not available
+        await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
       }
