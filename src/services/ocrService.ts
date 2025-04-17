@@ -1,5 +1,5 @@
 
-import { createWorker, Worker, PSM } from 'tesseract.js';
+import { createWorker, Worker, PSM, WorkerParams, RecognizeResult } from 'tesseract.js';
 
 export interface OCRResult {
   sanskritText: string;
@@ -14,7 +14,7 @@ const TRANSLATION_API_URL = "https://sanskrit-api.vercel.app/translate";
 export async function processImage(imageFile: File): Promise<OCRResult> {
   try {
     // Create a worker for Tesseract.js
-    const worker: Worker = await createWorker();
+    const worker = await createWorker();
     
     try {
       // Initialize worker with language data
