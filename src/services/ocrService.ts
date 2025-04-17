@@ -1,4 +1,3 @@
-
 import { createWorker, PSM, RecognizeResult } from 'tesseract.js';
 
 export interface OCRResult {
@@ -19,13 +18,11 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
     try {
       // Initialize worker with language data
       try {
-        await worker.load();
         await worker.loadLanguage('san');
         await worker.initialize('san');
       } catch (e) {
         console.warn('Sanskrit language data not available, falling back to English');
         // Fallback to English if Sanskrit is not available
-        await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
       }
@@ -117,9 +114,6 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
         console.error('Translation API error:', translationError);
       }
 
-      // Terminate the worker to free up resources
-      await worker.terminate();
-
       // Return the OCR results
       return {
         sanskritText: result.data.text,
@@ -129,9 +123,7 @@ export async function processImage(imageFile: File): Promise<OCRResult> {
       };
     } finally {
       // Make sure we always terminate the worker
-      if (worker) {
-        await worker.terminate();
-      }
+      await worker.terminate();
     }
   } catch (error) {
     console.error('OCR processing error:', error);

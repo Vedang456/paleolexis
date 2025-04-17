@@ -1,6 +1,6 @@
+
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -26,7 +26,6 @@ const Scanner: React.FC = () => {
   const [confidence, setConfidence] = useState<number | null>(null);
   
   const location = useLocation();
-  const { toast } = useToast();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -171,9 +170,9 @@ const Scanner: React.FC = () => {
       <main className="flex-1 py-8">
         <div className="container px-4 md:px-6">
           <div className="mb-8">
-            <h1 className="mb-2 font-serif text-3xl font-bold tracking-tight">Sanskrit Manuscript Scanner</h1>
+            <h1 className="mb-2 font-serif text-3xl font-bold tracking-tight">Sanskrit Scanner</h1>
             <p className="text-muted-foreground">
-              Upload an image of a handwritten Sanskrit manuscript to recognize, transliterate, and translate the text.
+              Upload an image of a Sanskrit manuscript to recognize, transliterate, and translate the text.
             </p>
           </div>
 
@@ -181,11 +180,11 @@ const Scanner: React.FC = () => {
             <TabsList>
               <TabsTrigger value="upload" className="flex items-center gap-1">
                 <Upload className="h-4 w-4" />
-                <span>Upload Manuscript</span>
+                <span>Upload Image</span>
               </TabsTrigger>
               <TabsTrigger value="demo" className="flex items-center gap-1">
                 <Book className="h-4 w-4" />
-                <span>Try Demo</span>
+                <span>Demo</span>
               </TabsTrigger>
             </TabsList>
 
@@ -208,7 +207,7 @@ const Scanner: React.FC = () => {
                     ) : (
                       <>
                         <ArrowDown className="h-4 w-4" />
-                        <span>Process Manuscript</span>
+                        <span>Process Image</span>
                       </>
                     )}
                   </Button>
@@ -231,9 +230,9 @@ const Scanner: React.FC = () => {
             <TabsContent value="demo" className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Demo Mode</CardTitle>
+                  <CardTitle>Demo</CardTitle>
                   <CardDescription>
-                    Explore pre-selected samples to see how Paleolexis processes and analyzes ancient Sanskrit manuscripts.
+                    Try with pre-selected samples to see how the application processes Sanskrit text.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
